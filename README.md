@@ -1,4 +1,4 @@
-# Лабораторная работа №22. Интерактивные веб-приложения на JavaScript
+# Лабораторная работа №23. Интерактивные веб-приложения на JavaScript
 
 **ФИО:** Шмаль Иван Максимович
 
@@ -39,8 +39,7 @@
 ## Структура проекта
 
 - `index.html` — файл сайта
-- `main.js` — запуск скрипта 
-- `calculator.js` — логика калькулятора
+- `main.js` — запуск скрипта
 - `README.md` — описание лабораторной работы
 - `img/` — скриншоты
 
@@ -49,20 +48,42 @@
 ### Примеры:
 
 ```JS
-export class Calculator {
-    constructor() {
-        this.display = document.getElementById("display");
-        this.expression = "";
-        this.hasError = false;
+const cells = document.querySelectorAll(".cell");
+const statusText = document.getElementById("status");
+const restartBtn = document.getElementById("restart");
+
+let currentPlayer = "X"
+let board = ["","","","","","","","",""];
+let gameActive = true;
+
+const winConditions = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6],
+];
+
+cells.forEach((cell) => {
+    cell.addEventListener("click", handleCellClick);
+});
+
+restartBtn.addEventListener("click", restartGame);
+
+function handleCellClick(event) {
+    const cell = event.target;
+    const index = cell.getAttribute("data-index");
+
+    if (board[index] !== "" || !gameActive) {
+        return;
     }
 
-    init() {
-        document.querySelectorAll("button").forEach((button) => {
-            button.addEventListener("click", () => {
-                this.handleButtonClick(button.textContent);
-            });
-        });
-        this.updateDisplay();
-    }
+    board[index] = currentPlayer;
+    cell.textContent = currentPlayer;
+
+    checkResult();
 }
 ```
